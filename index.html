@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Deck of Hard Truths - How to Play</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #0a0a1a;
+    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 40px 0 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 32px;
+  }
+  .header .emoji { font-size: 48px; margin-bottom: 12px; }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #dc2626, #d97706, #2563eb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  .header .subtitle {
+    font-size: 14px;
+    color: #888;
+    font-weight: 500;
+  }
+  .header .event {
+    margin-top: 16px;
+    font-size: 12px;
+    color: #666;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 32px;
+  }
+  .section h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #fff;
+  }
+  .section p {
+    font-size: 15px;
+    color: #aaa;
+    margin-bottom: 12px;
+  }
+
+  /* Card Types */
+  .card-type-box {
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .card-type-box.red {
+    background: linear-gradient(135deg, #1a0a0a, #2a1015);
+    border: 1px solid #dc2626;
+  }
+  .card-type-box.yellow {
+    background: linear-gradient(135deg, #1a1400, #2a1d05);
+    border: 1px solid #d97706;
+  }
+  .card-type-box.blue {
+    background: linear-gradient(135deg, #0a0a1a, #0d1530);
+    border: 1px solid #2563eb;
+  }
+  .card-type-box .type-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .card-type-box .type-emoji { font-size: 24px; }
+  .card-type-box .type-name {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .card-type-box.red .type-name { color: #dc2626; }
+  .card-type-box.yellow .type-name { color: #d97706; }
+  .card-type-box.blue .type-name { color: #2563eb; }
+  .card-type-box .type-count {
+    font-size: 11px;
+    color: #666;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .card-type-box .type-desc {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 10px;
+  }
+  .card-type-box .type-rule {
+    font-size: 13px;
+    color: #888;
+    padding-left: 16px;
+    border-left: 2px solid rgba(255,255,255,0.1);
+  }
+  .card-type-box.red .type-rule { border-color: #dc2626; }
+  .card-type-box.yellow .type-rule { border-color: #d97706; }
+  .card-type-box.blue .type-rule { border-color: #2563eb; }
+
+  /* Steps */
+  .steps {
+    list-style: none;
+    counter-reset: step;
+  }
+  .steps li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 48px;
+    margin-bottom: 20px;
+    min-height: 36px;
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .steps li .step-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .steps li .step-desc {
+    font-size: 13px;
+    color: #888;
+  }
+
+  /* Rules */
+  .rule-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .rule-box h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .rule-box ul {
+    list-style: none;
+    padding: 0;
+  }
+  .rule-box ul li {
+    font-size: 13px;
+    color: #aaa;
+    padding: 6px 0;
+    padding-left: 20px;
+    position: relative;
+  }
+  .rule-box ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #666;
+  }
+
+  /* Timing */
+  .timing-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px 16px;
+    font-size: 13px;
+  }
+  .timing-grid .time {
+    color: #fff;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .timing-grid .activity { color: #aaa; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 40px;
+  }
+  .footer p {
+    font-size: 12px;
+    color: #555;
+  }
+  .footer .credit {
+    margin-top: 8px;
+    font-size: 11px;
+    color: #444;
+  }
+
+  /* Highlight */
+  .highlight {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    margin: 32px 0;
+  }
+
+  /* Tip box */
+  .tip {
+    background: rgba(37, 99, 235, 0.1);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .tip .tip-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #2563eb;
+    margin-bottom: 6px;
+  }
+  .tip p {
+    font-size: 13px;
+    color: #93c5fd;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="emoji">🃏</div>
+    <h1>The Deck of Hard Truths</h1>
+    <div class="subtitle">An interactive cybersecurity roundtable game</div>
+    <div class="event">CIO CISO XGermany Munich 2026</div>
+  </div>
+
+  <!-- WHAT IS THIS -->
+  <div class="section">
+    <h2>What is this?</h2>
+    <p>A deck of <span class="highlight">26 cards</span> designed to spark real conversations between security leaders. No vendor pitches. No textbook answers. Just hard truths.</p>
+    <p>Draw a card. React. The table votes. Repeat.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- THE THREE CARD TYPES -->
+  <div class="section">
+    <h2>The Three Card Types</h2>
+
+    <div class="card-type-box red">
+      <div class="type-header">
+        <div class="type-emoji">🔴</div>
+        <div>
+          <div class="type-name">Breach Scenario</div>
+          <div class="type-count">8 cards</div>
+        </div>
+      </div>
+      <div class="type-desc">"This just happened. What do you do?"</div>
+      <div class="type-rule">You draw a real-world breach scenario. You have <strong>60 seconds</strong> to describe how you'd respond. Then the table votes: <strong>Contained</strong> or <strong>Catastrophic?</strong></div>
+    </div>
+
+    <div class="card-type-box yellow">
+      <div class="type-header">
+        <div class="type-emoji">🟡</div>
+        <div>
+          <div class="type-name">Hot Take</div>
+          <div class="type-count">10 cards</div>
+        </div>
+      </div>
+      <div class="type-desc">"Defend this. 30 seconds. Even if you disagree."</div>
+      <div class="type-rule">You draw a provocative statement. You <strong>must defend it for 30 seconds</strong> - even if you personally disagree. Then the table debates. No sitting on the fence.</div>
+    </div>
+
+    <div class="card-type-box blue">
+      <div class="type-header">
+        <div class="type-emoji">🔵</div>
+        <div>
+          <div class="type-name">Trade-Off</div>
+          <div class="type-count">8 cards</div>
+        </div>
+      </div>
+      <div class="type-desc">"Pick a side. No 'it depends.'"</div>
+      <div class="type-rule">Two competing priorities. You <strong>must pick one</strong> and defend your choice. "Both" and "it depends" are not allowed. The table shows hands for each side.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- HOW TO PLAY -->
+  <div class="section">
+    <h2>How to Play</h2>
+
+    <ol class="steps">
+      <li>
+        <div class="step-title">Fan the cards face-down</div>
+        <div class="step-desc">Place all cards in the center of the table. Color-coded backs are visible so you know the type before you draw.</div>
+      </li>
+      <li>
+        <div class="step-title">Draw a card</div>
+        <div class="step-desc">The moderator picks someone or asks for volunteers. You can choose your color (risk level) or go blind.</div>
+      </li>
+      <li>
+        <div class="step-title">Read it aloud</div>
+        <div class="step-desc">The moderator reads the card to the table so the drawer has a moment to think.</div>
+      </li>
+      <li>
+        <div class="step-title">Respond</div>
+        <div class="step-desc">🔴 60 seconds for breach scenarios. 🟡 30 seconds for hot takes. 🔵 Pick a side immediately for trade-offs.</div>
+      </li>
+      <li>
+        <div class="step-title">Table reacts</div>
+        <div class="step-desc">Show of hands, quick debate, or the moderator picks a dissenter to challenge. Keep it to 2-3 minutes total per card.</div>
+      </li>
+      <li>
+        <div class="step-title">Move on</div>
+        <div class="step-desc">Don't overanalyze. The energy is in the snap decisions, not the deep dives. That's what the main discussion is for.</div>
+      </li>
+    </ol>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- GROUND RULES -->
+  <div class="section">
+    <h2>Ground Rules</h2>
+
+    <div class="rule-box">
+      <h3>✅ Do</h3>
+      <ul>
+        <li>Be honest. "I don't know" is a valid answer.</li>
+        <li>Challenge each other. Disagreement is the point.</li>
+        <li>Share real stories. Anonymize if needed, but keep it real.</li>
+        <li>Have fun. This is serious content, not a serious vibe.</li>
+      </ul>
+    </div>
+
+    <div class="rule-box">
+      <h3>🚫 Don't</h3>
+      <ul>
+        <li>Give vendor pitches. We're all here as practitioners.</li>
+        <li>Say "it depends" on trade-offs. That's cheating.</li>
+        <li>Dominate the table. One card, one response, then share.</li>
+        <li>Take it outside the room. Chatham House Rule applies.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SUGGESTED TIMING -->
+  <div class="section">
+    <h2>Suggested Timing</h2>
+    <p>Draw 6-8 cards across a 60-minute session, between discussion blocks:</p>
+    <br>
+    <div class="timing-grid">
+      <div class="time">0:00</div><div class="activity">Icebreaker round</div>
+      <div class="time">0:05</div><div class="activity">🃏 Draw 1 warm-up card</div>
+      <div class="time">0:08</div><div class="activity">Discussion Block 1</div>
+      <div class="time">0:23</div><div class="activity">🃏 Draw 2 cards</div>
+      <div class="time">0:28</div><div class="activity">Discussion Block 2</div>
+      <div class="time">0:43</div><div class="activity">🃏 Draw 2 cards</div>
+      <div class="time">0:48</div><div class="activity">Discussion Block 3</div>
+      <div class="time">0:55</div><div class="activity">🃏 Draw 1 final card</div>
+      <div class="time">0:58</div><div class="activity">Wrap-up round</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- TIPS -->
+  <div class="section">
+    <h2>Pro Tips</h2>
+
+    <div class="tip">
+      <div class="tip-label">For the Moderator</div>
+      <p>Read the card aloud yourself so the drawer can process. Push back on corporate answers: "OK, but what would you ACTUALLY do at 3 AM?" After each response, quick table poll: "Who agrees? Who'd do something completely different?"</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">For Participants</div>
+      <p>The best answers are the honest ones, not the polished ones. If your gut reaction is "we'd be screwed" - say that. Everyone at this table has been there.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">For Everyone</div>
+      <p>These cards work at any security roundtable, team offsite, or leadership meeting. Steal the format. Make your own cards. The goal is better conversations, not a perfect game.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>🃏 The Deck of Hard Truths</p>
+    <div class="credit">Created for CIO CISO XGermany Munich 2026<br>by Alexander Goller</div>
+  </div>
+
+</div>
+
+</body>
+</html>

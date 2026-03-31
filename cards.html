@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Deck of Hard Truths - Print Ready Cards</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f0f0f0;
+    padding: 20px;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .page-break { page-break-before: always; }
+    .no-print { display: none; }
+    .card-grid { gap: 4mm; }
+  }
+
+  h1.no-print {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  p.no-print {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #666;
+    font-size: 14px;
+  }
+
+  .section-label {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 30px 0 15px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: white;
+    display: inline-block;
+  }
+  .section-label.red { background: #dc2626; }
+  .section-label.yellow { background: #d97706; }
+  .section-label.blue { background: #2563eb; }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 900px;
+    margin: 0 auto 40px;
+  }
+
+  .card {
+    width: 100%;
+    aspect-ratio: 2.5 / 3.5;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  /* RED CARDS */
+  .card.red {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border: 3px solid #dc2626;
+    color: #f0f0f0;
+  }
+  .card.red .card-type {
+    background: #dc2626;
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .card.red .card-id {
+    color: #dc2626;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .card.red .card-title {
+    font-size: 15px;
+    font-weight: 900;
+    color: #ff6b6b;
+    margin: 6px 0;
+    line-height: 1.2;
+  }
+  .card.red .card-body {
+    font-size: 11px;
+    line-height: 1.5;
+    color: #ccc;
+    flex-grow: 1;
+  }
+  .card.red .card-prompt {
+    font-size: 12px;
+    font-weight: 700;
+    color: #dc2626;
+    margin-top: 8px;
+    text-align: right;
+  }
+
+  /* YELLOW CARDS */
+  .card.yellow {
+    background: linear-gradient(135deg, #1a1a2e 0%, #2d1b00 50%, #3d2200 100%);
+    border: 3px solid #d97706;
+    color: #f0f0f0;
+  }
+  .card.yellow .card-type {
+    background: #d97706;
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .card.yellow .card-id {
+    color: #d97706;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .card.yellow .card-body {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #fbbf24;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+  }
+  .card.yellow .card-prompt {
+    font-size: 11px;
+    font-weight: 600;
+    color: #d97706;
+    text-align: center;
+    font-style: italic;
+  }
+
+  /* BLUE CARDS */
+  .card.blue {
+    background: linear-gradient(135deg, #1a1a2e 0%, #0d1b3e 50%, #0a1628 100%);
+    border: 3px solid #2563eb;
+    color: #f0f0f0;
+  }
+  .card.blue .card-type {
+    background: #2563eb;
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .card.blue .card-id {
+    color: #2563eb;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .card.blue .card-body {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #93c5fd;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  .card.blue .card-body .vs {
+    font-size: 20px;
+    font-weight: 900;
+    color: #2563eb;
+    margin: 6px 0;
+  }
+  .card.blue .card-body .option {
+    font-size: 14px;
+    font-weight: 700;
+    color: #e0e0e0;
+  }
+  .card.blue .card-prompt {
+    font-size: 11px;
+    font-weight: 600;
+    color: #2563eb;
+    text-align: center;
+  }
+
+  .card .branding {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 7px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* CARD BACKS */
+  .card.back {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .card.back .back-emoji { font-size: 40px; margin-bottom: 10px; }
+  .card.back .back-type { font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 6px; }
+  .card.back .back-subtitle { font-size: 10px; font-style: italic; color: rgba(255,255,255,0.6); margin-bottom: 20px; max-width: 80%; }
+  .card.back .back-brand { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: rgba(255,255,255,0.4); }
+
+  .card.back.red .back-type { color: #dc2626; }
+  .card.back.yellow .back-type { color: #d97706; }
+  .card.back.blue .back-type { color: #2563eb; }
+</style>
+</head>
+<body>
+
+<h1 class="no-print">🃏 The Deck of Hard Truths</h1>
+<p class="no-print">Print this page (Ctrl/Cmd+P) — set to "No margins" and "Background graphics ON" for best results. Cut along card edges.</p>
+
+<!-- ==================== CARD BACKS ==================== -->
+
+<div class="section-label red no-print">Card Backs (print on reverse side)</div>
+
+<div class="card-grid">
+  <div class="card back red">
+    <div class="back-emoji">🔴</div>
+    <div class="back-type">Breach Scenario</div>
+    <div class="back-subtitle">"This just happened. What do you do?"</div>
+    <div class="back-brand">The Deck of Hard Truths</div>
+  </div>
+  <div class="card back yellow">
+    <div class="back-emoji">🟡</div>
+    <div class="back-type">Hot Take</div>
+    <div class="back-subtitle">"Defend this. 30 seconds. Even if you disagree."</div>
+    <div class="back-brand">The Deck of Hard Truths</div>
+  </div>
+  <div class="card back blue">
+    <div class="back-emoji">🔵</div>
+    <div class="back-type">Trade-Off</div>
+    <div class="back-subtitle">"Pick a side. No 'it depends.'"</div>
+    <div class="back-brand">The Deck of Hard Truths</div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ==================== RED CARDS ==================== -->
+
+<div class="section-label red no-print">🔴 Breach Scenarios (8 cards)</div>
+
+<div class="card-grid">
+
+  <div class="card red">
+    <div><div class="card-type">Breach Scenario</div><div class="card-id">R1</div></div>
+    <div class="card-title">The Silent Tenant</div>
+    <div class="card-body">Your cloud team discovers a rogue Azure AD tenant that's been active for <strong>6 months</strong>. It has read access to your production data lake. No alerts were triggered.</div>
+    <div class="card-prompt">What's your first move? →</div>
+  </div>
+
+  <div class="card red">
+    <div><div class="card-type">Breach Scenario</div><div class="card-id">R2</div></div>
+    <div class="card-title">3 AM Knock</div>
+    <div class="card-body">German police are at your admin's door at 3 AM. <strong>CVSS 10.0, no patch available</strong>, your systems are exposed. You have 4 hours before expected exploitation begins.</div>
+    <div class="card-prompt">Go. →</div>
+  </div>
+
+  <div class="card red">
+    <div><div class="card-type">Breach Scenario</div><div class="card-id">R3</div></div>
+    <div class="card-title">The Trusted Insider</div>
+    <div class="card-body">Your SIEM vendor's update mechanism was compromised. The malicious update has been running in your environment for <strong>2 weeks</strong>. Your security tool is now the threat.</div>
+    <div class="card-prompt">What do you contain first? →</div>
+  </div>
+
+  <div class="card red">
+    <div><div class="card-type">Breach Scenario</div><div class="card-id">R4</div></div>
+    <div class="card-title">Supply Chain Monday</div>
+    <div class="card-body">It's Monday morning. A critical npm package used across your CI/CD pipeline was <strong>backdoored over the weekend</strong>. Your devs ran npm install on Friday.</div>
+    <div class="card-prompt">How many systems are compromised? →</div>
+  </div>
+
+  <div class="card red">
+    <div><div class="card-type">Breach Scenario</div><div class="card-id">R5</div></div>
+    <div class="card-title">The Ransomware Fork</div>
+    <div class="card-body">Ransomware hits at 14:00 Friday. Attackers: <strong>pay 2M EUR by midnight</strong> or customer data goes public. Backups are 72h old. Legal says don't pay. PR says contain the story.</div>
+    <div class="card-prompt">What's your call? →</div>
+  </div>
+
+  <div class="card red">
+    <div><div class="card-type">Breach Scenario</div><div class="card-id">R6</div></div>
+    <div class="card-title">The AI Assistant</div>
+    <div class="card-body">An employee connected your internal knowledge base to an AI assistant "for productivity." The AI has been <strong>summarizing confidential M&A documents</strong> and caching them externally.</div>
+    <div class="card-prompt">How do you even scope this? →</div>
+  </div>
+
+  <div class="card red">
+    <div><div class="card-type">Breach Scenario</div><div class="card-id">R7</div></div>
+    <div class="card-title">Lateral in 8 Minutes</div>
+    <div class="card-body">EDR flags lateral movement. Attacker: compromised VPN endpoint to <strong>domain controller in 8 minutes</strong>. Your IR team's average mobilization time: 45 minutes.</div>
+    <div class="card-prompt">What contained the blast radius? →</div>
+  </div>
+
+  <div class="card red">
+    <div><div class="card-type">Breach Scenario</div><div class="card-id">R8</div></div>
+    <div class="card-title">The Partner Breach</div>
+    <div class="card-body">Your largest SI partner emails: they've been breached. They have <strong>VPN access to your staging environment</strong>. They don't know when the compromise started.</div>
+    <div class="card-prompt">How much do you now distrust? →</div>
+  </div>
+
+</div>
+
+<div class="page-break"></div>
+
+<!-- ==================== YELLOW CARDS ==================== -->
+
+<div class="section-label yellow no-print">🟡 Hot Takes (10 cards)</div>
+
+<div class="card-grid">
+
+  <div class="card yellow">
+    <div><div class="card-type">Hot Take</div><div class="card-id">Y1</div></div>
+    <div class="card-body">"Zero Trust is just a marketing term. Nobody has actually implemented it."</div>
+    <div class="card-prompt">Defend this. 30 seconds.</div>
+  </div>
+
+  <div class="card yellow">
+    <div><div class="card-type">Hot Take</div><div class="card-id">Y2</div></div>
+    <div class="card-body">"Firewalls will be irrelevant within 5 years."</div>
+    <div class="card-prompt">Defend this. 30 seconds.</div>
+  </div>
+
+  <div class="card yellow">
+    <div><div class="card-type">Hot Take</div><div class="card-id">Y3</div></div>
+    <div class="card-body">"AI will replace 50% of SOC analysts by 2028."</div>
+    <div class="card-prompt">Defend this. 30 seconds.</div>
+  </div>
+
+  <div class="card yellow">
+    <div><div class="card-type">Hot Take</div><div class="card-id">Y4</div></div>
+    <div class="card-body">"The CISO should never report to the CIO. It's a fundamental conflict of interest."</div>
+    <div class="card-prompt">Defend this. 30 seconds.</div>
+  </div>
+
+  <div class="card yellow">
+    <div><div class="card-type">Hot Take</div><div class="card-id">Y5</div></div>
+    <div class="card-body">"Compliance frameworks like ISO 27001 give organizations a false sense of security."</div>
+    <div class="card-prompt">Defend this. 30 seconds.</div>
+  </div>
+
+  <div class="card yellow">
+    <div><div class="card-type">Hot Take</div><div class="card-id">Y6</div></div>
+    <div class="card-body">"Microsegmentation is too complex for most organizations to implement meaningfully."</div>
+    <div class="card-prompt">Defend this. 30 seconds.</div>
+  </div>
+
+  <div class="card yellow">
+    <div><div class="card-type">Hot Take</div><div class="card-id">Y7</div></div>
+    <div class="card-body">"The biggest cybersecurity threat isn't technical - it's board-level ignorance."</div>
+    <div class="card-prompt">Defend this. 30 seconds.</div>
+  </div>
+
+  <div class="card yellow">
+    <div><div class="card-type">Hot Take</div><div class="card-id">Y8</div></div>
+    <div class="card-body">"Cloud-native organizations are inherently more secure than on-prem ones."</div>
+    <div class="card-prompt">Defend this. 30 seconds.</div>
+  </div>
+
+  <div class="card yellow">
+    <div><div class="card-type">Hot Take</div><div class="card-id">Y9</div></div>
+    <div class="card-body">"Cyber insurance is creating moral hazard - it makes companies less secure, not more."</div>
+    <div class="card-prompt">Defend this. 30 seconds.</div>
+  </div>
+
+  <div class="card yellow">
+    <div><div class="card-type">Hot Take</div><div class="card-id">Y10</div></div>
+    <div class="card-body">"If your security strategy requires humans to not make mistakes, it's already failed."</div>
+    <div class="card-prompt">Defend this. 30 seconds.</div>
+  </div>
+
+</div>
+
+<div class="page-break"></div>
+
+<!-- ==================== BLUE CARDS ==================== -->
+
+<div class="section-label blue no-print">🔵 Trade-Offs (8 cards)</div>
+
+<div class="card-grid">
+
+  <div class="card blue">
+    <div><div class="card-type">Trade-Off</div><div class="card-id">B1</div></div>
+    <div class="card-body">
+      <div class="option">DETECTION</div>
+      <div class="vs">vs.</div>
+      <div class="option">CONTAINMENT</div>
+      <div style="margin-top:8px; font-size:11px; color:#60a5fa;">You can only fund ONE this year.</div>
+    </div>
+    <div class="card-prompt">Pick. Defend.</div>
+  </div>
+
+  <div class="card blue">
+    <div><div class="card-type">Trade-Off</div><div class="card-id">B2</div></div>
+    <div class="card-body">
+      <div class="option">THREAT INTEL PLATFORM</div>
+      <div class="vs">vs.</div>
+      <div class="option">MICROSEGMENTATION ROLLOUT</div>
+      <div style="margin-top:8px; font-size:11px; color:#60a5fa;">Budget covers one.</div>
+    </div>
+    <div class="card-prompt">Pick. Defend.</div>
+  </div>
+
+  <div class="card blue">
+    <div><div class="card-type">Trade-Off</div><div class="card-id">B3</div></div>
+    <div class="card-body">
+      <div class="option">SPEED OF CLOUD MIGRATION</div>
+      <div class="vs">vs.</div>
+      <div class="option">SECURITY OF CLOUD MIGRATION</div>
+      <div style="margin-top:8px; font-size:11px; color:#60a5fa;">Which actually wins at your org?</div>
+    </div>
+    <div class="card-prompt">Be honest.</div>
+  </div>
+
+  <div class="card blue">
+    <div><div class="card-type">Trade-Off</div><div class="card-id">B4</div></div>
+    <div class="card-body">
+      <div class="option">TRANSPARENCY WITH CUSTOMERS</div>
+      <div class="vs">vs.</div>
+      <div class="option">MINIMIZE LEGAL EXPOSURE</div>
+      <div style="margin-top:8px; font-size:11px; color:#60a5fa;">After a breach.</div>
+    </div>
+    <div class="card-prompt">Where do you land?</div>
+  </div>
+
+  <div class="card blue">
+    <div><div class="card-type">Trade-Off</div><div class="card-id">B5</div></div>
+    <div class="card-body">
+      <div class="option">3 JUNIOR ANALYSTS</div>
+      <div class="vs">vs.</div>
+      <div class="option">1 SENIOR ARCHITECT</div>
+      <div style="margin-top:8px; font-size:11px; color:#60a5fa;">Same budget.</div>
+    </div>
+    <div class="card-prompt">Pick. Defend.</div>
+  </div>
+
+  <div class="card blue">
+    <div><div class="card-type">Trade-Off</div><div class="card-id">B6</div></div>
+    <div class="card-body">
+      <div class="option">BEST-OF-BREED STACK</div>
+      <div class="vs">vs.</div>
+      <div class="option">SINGLE-VENDOR PLATFORM</div>
+      <div style="margin-top:8px; font-size:11px; color:#60a5fa;">Your bet for the next 3 years.</div>
+    </div>
+    <div class="card-prompt">Pick. Defend.</div>
+  </div>
+
+  <div class="card blue">
+    <div><div class="card-type">Trade-Off</div><div class="card-id">B7</div></div>
+    <div class="card-body">
+      <div class="option">BLOCK SUSPICIOUS TRAFFIC</div>
+      <div class="vs">vs.</div>
+      <div class="option">MONITOR ONLY</div>
+      <div style="margin-top:8px; font-size:11px; color:#60a5fa;">Alert fires. 30 seconds to decide.</div>
+    </div>
+    <div class="card-prompt">Clock's ticking.</div>
+  </div>
+
+  <div class="card blue">
+    <div><div class="card-type">Trade-Off</div><div class="card-id">B8</div></div>
+    <div class="card-body">
+      <div class="option">PREVENT THE NEXT BREACH</div>
+      <div class="vs">vs.</div>
+      <div class="option">FASTER RECOVERY FROM THE INEVITABLE ONE</div>
+      <div style="margin-top:8px; font-size:11px; color:#60a5fa;">Where does the next euro go?</div>
+    </div>
+    <div class="card-prompt">Pick. Defend.</div>
+  </div>
+
+</div>
+
+</body>
+</html>
