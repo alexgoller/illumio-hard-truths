@@ -9,10 +9,11 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const OUTPUT_DIR = join(__dirname, 'images');
 const CARDS_HTML = join(__dirname, 'cards.html');
 
-// Card dimensions at 300dpi (poker size 2.5" x 3.5")
-const CARD_WIDTH = 750;
-const CARD_HEIGHT = 1050;
-const DEVICE_SCALE = 2; // 2x for crisp rendering
+// Poker card: 2.5" x 3.5" at 300dpi = 750x1050
+// CSS viewport = 375x525, device scale 4x = output 1500x2100 pixels
+const CSS_WIDTH = 375;
+const CSS_HEIGHT = 525;
+const DEVICE_SCALE = 4;
 
 async function main() {
   if (!existsSync(OUTPUT_DIR)) mkdirSync(OUTPUT_DIR, { recursive: true });
@@ -85,23 +86,23 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: ${CARD_WIDTH / DEVICE_SCALE}px;
-  height: ${CARD_HEIGHT / DEVICE_SCALE}px;
+  width: ${CSS_WIDTH}px;
+  height: ${CSS_HEIGHT}px;
   overflow: hidden;
 }
 ${styles}
 .card-grid { display: contents; }
 .card {
-  width: ${CARD_WIDTH / DEVICE_SCALE}px !important;
-  height: ${CARD_HEIGHT / DEVICE_SCALE}px !important;
+  width: ${CSS_WIDTH}px !important;
+  height: ${CSS_HEIGHT}px !important;
   aspect-ratio: unset !important;
 }
 </style>
 </head><body>${cardHTML}</body></html>`;
 
     await renderPage.setViewportSize({
-      width: CARD_WIDTH / DEVICE_SCALE,
-      height: CARD_HEIGHT / DEVICE_SCALE,
+      width: CSS_WIDTH,
+      height: CSS_HEIGHT,
     });
 
     await renderPage.setContent(standalone, { waitUntil: 'networkidle' });
@@ -126,10 +127,21 @@ ${styles}
       omitBackground: true, // transparent background
     });
 
-    console.log(`✅ ${filename} (${CARD_WIDTH}x${CARD_HEIGHT}px @${DEVICE_SCALE}x)`);
+    console.log(`✅ ${filename} (${CSS_WIDTH * DEVICE_SCALE}x${CSS_HEIGHT * DEVICE_SCALE}px @${DEVICE_SCALE}x)`);
   }
 
   await browser.close();
+
+  // Set 300 DPI metadata on all PNGs using ImageMagick
+  console.log('\nSetting 300 DPI metadata...');
+  const { execSync } = await import('child_process');
+  try {
+    execSync(`magick mogrify -density 300 -units PixelsPerInch "${OUTPUT_DIR}"/*.png`, { stdio: 'inherit' });
+    console.log('DPI metadata set.');
+  } catch (e) {
+    console.warn('Warning: Could not set DPI metadata (install ImageMagick to fix)');
+  }
+
   console.log(`\nDone! ${cardData.length} cards saved to ${OUTPUT_DIR}`);
 }
 
