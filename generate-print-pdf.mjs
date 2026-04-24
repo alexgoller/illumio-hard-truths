@@ -15,16 +15,18 @@ const CARDS_HTML = join(__dirname, 'cards.html');
 const OUT_PDF = join(__dirname, 'illumio-hard-truths-print.pdf');
 const OUT_HTML = join(__dirname, 'print-layout.html');
 
-// Geometry (all mm)
-const TRIM_W = 63.5;
-const TRIM_H = 88.9;
+// Geometry (all mm) — large-format cards (2x poker) for table readability.
+// Trim 127 x 177.8 mm keeps the poker 2.5:3.5 aspect ratio, preserves bleed
+// and crop marks, and keeps the printable area comfortably inside A5.
+const TRIM_W = 127;
+const TRIM_H = 177.8;
 const BLEED = 3;
 const MARK_LEN = 5;
 const MARK_OFFSET = 0;       // gap between bleed edge and start of crop mark
 const MARK_STROKE = 0.25;    // crop mark line thickness
 const PAGE_PAD = BLEED + MARK_OFFSET + MARK_LEN + 2; // 10mm
-const PAGE_W = TRIM_W + 2 * PAGE_PAD; // 83.5
-const PAGE_H = TRIM_H + 2 * PAGE_PAD; // 108.9
+const PAGE_W = TRIM_W + 2 * PAGE_PAD; // 147
+const PAGE_H = TRIM_H + 2 * PAGE_PAD; // 197.8
 
 // Offsets from page edge
 const BLEED_OFF = PAGE_PAD - BLEED;     // 7mm
